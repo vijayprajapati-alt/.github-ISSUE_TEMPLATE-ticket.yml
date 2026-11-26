@@ -4,19 +4,43 @@ title: "[Ticket] "
 labels: ["ticket", "open"]
 body:
   - type: input
-    id: name
+    id: user_name
     attributes:
-      label: Name
+      label: User Name
+    validations:
+      required: true
+  - type: input
+    id: company
+    attributes:
+      label: Company Name
+      value: Hexatron Industries Limited
     validations:
       required: true
   - type: input
     id: department
     attributes:
-      label: Department / Site
+      label: Department
+    validations:
+      required: true
   - type: input
-    id: mobile
+    id: designation
     attributes:
-      label: Mobile Number
+      label: Designation
+    validations:
+      required: true
+  - type: input
+    id: mail_id
+    attributes:
+      label: Mail ID
+      placeholder: name@company.com
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Number
+    validations:
+      required: true
   - type: dropdown
     id: issue_type
     attributes:
