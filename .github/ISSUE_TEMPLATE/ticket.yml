@@ -1,0 +1,48 @@
+name: Support Ticket
+description: Apna issue yahan likho
+title: "[Ticket] "
+labels: ["ticket", "open"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+    validations:
+      required: true
+  - type: input
+    id: department
+    attributes:
+      label: Department / Site
+  - type: input
+    id: mobile
+    attributes:
+      label: Mobile Number
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue Type
+      options:
+        - Computer / Excel
+        - Internet / Network
+        - CCTV
+        - Travel Ticket
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: Issue detail me likho. Screenshot ho to yahin drag karke daal do.
+    validations:
+      required: true
