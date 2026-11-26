@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hexatron Industries Limited - IT Support Ticket</title>
+<style>
+:root{--bg:#eef1f6;--card:#fff;--text:#1d2330;--mute:#667085;--line:#d9dee8;--pri:#1f4fbf;--head:#14306e}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1218;--card:#1a1f29;--text:#e8ebf2;--mute:#9aa3b2;--line:#2c3340;--pri:#6b94ff;--head:#16295c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:16px 14px 40px}
+.head{background:var(--head);color:#fff;border-radius:12px 12px 0 0;padding:20px;text-align:center}
+.head h1{margin:0;font-size:22px;letter-spacing:.3px}
+.head p{margin:4px 0 0;opacity:.85;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;padding:18px}
+h2{font-size:14px;text-transform:uppercase;letter-spacing:.8px;color:var(--pri);margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h2:first-of-type{margin-top:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.full{grid-column:1/-1}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+label i{color:#dc2626;font-style:normal}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+input[readonly]{opacity:.85;font-weight:600}
+textarea{min-height:100px;resize:vertical}
+button{padding:11px 18px;border:0;border-radius:8px;background:var(--pri);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+button.alt{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+button:disabled{opacity:.6}
+#status{margin-top:12px;font-weight:600}
+.bad{color:#dc2626}
+.hp{position:absolute;left:-9999px}
+.done{text-align:center;padding:10px 0}
+.done .no{font-size:26px;font-weight:800;color:var(--pri);margin:6px 0}
+.done table{margin:14px auto;border-collapse:collapse;text-align:left;width:100%}
+.done td{border:1px solid var(--line);padding:6px 10px}
+.done td:first-child{font-weight:600;width:38%;background:var(--bg)}
+.hide{display:none}
+@media print{.noprint{display:none}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>HEXATRON INDUSTRIES LIMITED</h1>
+    <p>IT Support Ticket Form</p>
+  </div>
+
+  <div class="card">
+    <form id="f">
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+      <h2>User Details</h2>
+      <div class="grid">
+        <div class="full"><label for="company">Company Name</label>
+          <input id="company" value="Hexatron Industries Limited" readonly></div>
+        <div class="full"><label for="when">Date &amp; Time</label>
+          <input id="when" readonly></div>
+        <div><label for="user">User Name <i>*</i></label><input id="user" required maxlength="80"></div>
+        <div><label for="dept">Department <i>*</i></label><input id="dept" required maxlength="80"></div>
+        <div><label for="desig">Designation <i>*</i></label><input id="desig" required maxlength="80"></div>
+        <div><label for="mail">Mail ID <i>*</i></label><input id="mail" type="email" required maxlength="100" placeholder="name@mkcil.co.in"></div>
+        <div class="full"><label for="phone">Contact Number <i>*</i></label>
+          <input id="phone" type="tel" required pattern="[0-9+ ]{10,15}" maxlength="15" title="10 se 15 digit ka number likho"></div>
+      </div>
+
+      <h2>Issue Details</h2>
+      <div class="grid">
+        <div><label for="type">Issue Type <i>*</i></label>
+          <select id="type"><option>Computer / Excel</option><option>Internet / Network</option>
+            <option>CCTV</option><option>Travel Ticket</option><option>Other</option></select></div>
+        <div><label for="pri">Priority</label>
+          <select id="pri"><option>Low</option><option selected>Medium</option><option>High</option></select></div>
+        <div class="full"><label for="assign">Assign To</label>
+          <select id="assign"><option>Unassigned</option><option>Vijay Prajapati</option><option>IT Team Member 2</option><option>IT Team Member 3</option></select></div>
+        <div class="full"><label for="desc">Issue Description <i>*</i></label>
+          <textarea id="desc" required maxlength="1000"></textarea></div>
+      </div>
+
+      <p style="margin:16px 0 0"><button id="btn" type="submit">Ticket Submit Karo</button></p>
+      <div id="status"></div>
+    </form>
+
+    <div id="done" class="done hide"></div>
+  </div>
+</div>
+
+<script>
+// Web3Forms access key yahan paste karo
+var ACCESS_KEY = "YOUR_ACCESS_KEY";
+var COMPANY = "Hexatron Industries Limited";
+
+var $ = function (i) { return document.getElementById(i); };
+var form = $("f"), statusEl = $("status"), btn = $("btn"), done = $("done");
+
+function stamp() { $("when").value = new Date().toLocaleString("en-IN"); }
+stamp(); setInterval(stamp, 30000);
+
+function row(t, k, v) {
+  var tr = document.createElement("tr");
+  var a = document.createElement("td"), b = document.createElement("td");
+  a.textContent = k; b.textContent = v; tr.appendChild(a); tr.appendChild(b); t.appendChild(tr);
+}
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  if (form.botcheck.checked) return;
+  var no = "TKT-" + Date.now().toString(36).toUpperCase().slice(-6);
+  stamp(); var when = $("when").value;
+
+  // Mail me fields isi order me aayenge
+  var d = {
+    access_key: ACCESS_KEY,
+    subject: "[" + no + "] " + COMPANY + " - " + $("type").value + " (" + $("pri").value + ")",
+    from_name: "Hexatron Ticket Form",
+    replyto: $("mail").value.trim(),
+    "Company Name": COMPANY,
+    "Ticket No": no,
+    "Date & Time": when,
+    "User Name": $("user").value.trim(),
+    "Department": $("dept").value.trim(),
+    "Designation": $("desig").value.trim(),
+    "Mail ID": $("mail").value.trim(),
+    "Contact Number": $("phone").value.trim(),
+    "Issue Type": $("type").value,
+    "Priority": $("pri").value,
+    "Assign To": $("assign").value,
+    "Issue Description": $("desc").value.trim()
+  };
+
+  btn.disabled = true; statusEl.className = ""; statusEl.textContent = "Bhej rahe hain...";
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(d)
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (j) {
+    if (!j.success) { throw new Error("fail"); }
+    done.textContent = "";
+    var h = document.createElement("div"); h.textContent = "Ticket submit ho gayi"; h.style.fontWeight = "700";
+    var n = document.createElement("div"); n.className = "no"; n.textContent = no;
+    var t = document.createElement("table");
+    ["Company Name","Date & Time","User Name","Department","Designation","Mail ID","Contact Number","Issue Type","Priority","Assign To","Issue Description"]
+      .forEach(function (k) { row(t, k, d[k]); });
+    var p = document.createElement("button"); p.className = "alt noprint"; p.textContent = "Print"; p.onclick = function () { window.print(); };
+    var nb = document.createElement("button"); nb.className = "noprint"; nb.textContent = "Naya Ticket"; nb.style.marginLeft = "8px";
+    nb.onclick = function () { done.classList.add("hide"); form.classList.remove("hide"); form.reset(); statusEl.textContent = ""; stamp(); };
+    done.appendChild(h); done.appendChild(n); done.appendChild(t); done.appendChild(p); done.appendChild(nb);
+    form.classList.add("hide"); done.classList.remove("hide");
+  })
+  .catch(function () {
+    statusEl.className = "bad";
+    statusEl.textContent = "Ticket submit nahi hui. Internet check karke dobara try karo.";
+  })
+  .then(function () { btn.disabled = false; });
+});
+</script>
+</body>
+</html>
